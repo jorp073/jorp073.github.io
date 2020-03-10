@@ -1,0 +1,62 @@
+<html>
+<head>
+    <meta charset="utf-8">
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+div.chess{
+margin-left: auto;
+margin-right: auto;
+border:solid 10px #F00;
+width: 100px;
+height:100px;
+font-size: 20px;
+text-align: center;
+line-height: 90px;
+margin-top:5px;
+}
+</style>
+</head>
+<script>
+var default_board="DDD UUU";
+var b=default_board;
+
+function e(i, s)
+{
+    var c = document.getElementById("c"+i);
+    var w = ' ';
+    if (s=='D') w = 'u';
+    if (s=='U') w = 'd';
+    c.innerHTML=w;
+}
+
+function graph()
+{
+    e(0, b[0]);
+    e(1, b[1]);
+    e(1, b[2]);
+    e(1, b[3]);
+    e(1, b[4]);
+    e(1, b[5]);
+    e(1, b[6]);
+}
+
+
+funciton clickitem(i)
+{
+}
+
+</script>
+<body>
+<div class="chess" id="c0"></div>
+<div class="chess" id="c1"></div>
+<div class="chess" id="c2"></div>
+<div class="chess" id="c3"></div>
+<div class="chess" id="c4"></div>
+<div class="chess" id="c5"></div>
+<div class="chess" id="c6"></div>
+</body>
+<script>
+    graph();
+    document.getElementById("c0").innerHTML='as';
+</script>
+</html>
