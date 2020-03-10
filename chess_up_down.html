@@ -30,7 +30,8 @@ margin-top:5px;
 </head>
 
 <body>
-<span class="tip">目标：点击棋子，棋子会移动，无法移动3格。<br>
+<span class="tip">目标：点击棋子，棋子会单向移动。<br>
+    只能移动一或两格至空白处，无法移动3格或后退。<br>
     不能撤销，只能<div class="chess" style="border-color:blue; display:inline;" onclick="reset_all()">重置</div>。你能把棋子都移动到对面吗？</span>
 <div class="chess" id="c0" onclick="click_item(0);"></div>
 <div class="chess" id="c1" onclick="click_item(1);"></div>
