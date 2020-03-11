@@ -1,0 +1,243 @@
+<html>
+<head>
+    <meta charset="utf-8">
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+div.chess{
+border:dotted 4px gray;
+width: 130px;
+font-size: 50px;
+text-align: center;
+line-height: 90px;
+margin: 5px;
+}
+
+div.red{
+color: red;
+border-color:red;
+background:#fcc;
+}
+
+div.green{
+color: green;
+border-color:green;
+background:#cfc;
+}
+
+table.board{
+margin-left:auto;
+margin-right:auto;
+background:url('board.png');
+width:900px;
+height:900px;
+border:none;
+cell-padding: 0px;
+cell-margin: 0px;
+padding: 0px;
+}
+
+div.f-right{
+float: right;
+}
+
+div.a-center{
+margin-left:auto;
+margin-right:auto;
+}
+
+div.sel {
+border-style: solid;
+color:#00f;
+}
+
+span.tada{
+font-size:40px;
+color:blue;
+}
+
+.resetbtn{
+    width: 100px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 30px;
+}
+
+.tip{
+    font-size: 30px;
+}
+</style>
+</head>
+
+<body>
+<span class="tip">选中一枚棋子，再点击空白处移动过去。<br>
+    棋子只能沿着直线移动到四周边缘点。<br>
+    不能撤销，只能<div class="chess" style="border-color:blue; display:inline; border-style:solid" onclick="reset_all()">重置</div>。你能交换两组棋子的位置吗？</span>
+<table class="board">
+    <tr>
+        <td id="c1" onclick="click_item(1)" width="33%" height="33%" style="text-align:left;vertical-align:top; padding:20px 100px 100px 10px">
+            <div class="chess red">红色</div>
+        </td>
+        <td id="c2" onclick="click_item(2)" width="34%" style="text-align:center;vertical-align:top; padding:20px 0px 100px 0px">
+            <div class="chess red a-center">红色</div>
+        </td>
+        <td id="c3" onclick="click_item(3)" style="text-align:right;vertical-align:top; padding:20px 10px 100px 100px">
+            <div class="chess red f-right">红色</div>
+        </td>
+    </tr>
+    <tr>
+        <td id="c4" onclick="click_item(4)" height="34%"><div class="chess red">红色</div></td>
+        <td id="c5"></td>
+        <td id="c6" onclick="click_item(6)"><div class="chess red f-right">红色</div></td>
+    </tr>
+    <tr>
+        <td id="c7" onclick="click_item(7)" width="33%" style="text-align:left;vertical-align:bottom; padding:100px 100px 10px 10px">
+            <div class="chess green">绿色</div>
+        </td>
+        <td id="c8" onclick="click_item(8)" width="34%" style="text-align:center;vertical-align:bottom; padding:100px 0px 10px 0px">
+            <div class="chess red a-center">红色</div>
+        </td>
+        <td id="c9" onclick="click_item(9)" style="text-align:right;vertical-align:bottom; padding:100px 10px 10px 100px">
+            <div class="chess green f-right">绿色</div>
+        </td>
+    </tr>
+</table>
+</body>
+<script>
+var default_board=new Array();
+default_board[1]="R"
+default_board[2]=" "
+default_board[3]="R"
+default_board[4]=" "
+default_board[5]=" "
+default_board[6]=" "
+default_board[7]="G"
+default_board[8]=" "
+default_board[9]="G"
+
+var b=default_board.concat();
+var sel_index = 0;
+
+function e(i, s)
+{
+    var c = document.getElementById("c"+i);
+    var w = '';
+    if (s=='W')
+    {
+        w = '<span class="tada">嗒哒～你真厉害！</span>';
+    }
+    else if (s==" ")
+    {
+        w = ' ';
+    }
+    else
+    {
+        w = '<div class="chess';
+        w += s=='R' ? ' red' : ' green';
+        if (i%3==2) w+= ' a-center';
+        else if (i%3==0) w+= ' f-right';
+
+        if (i==sel_index) w+= ' sel';
+
+        w+='">';
+        w+= s=='R' ? '红' : '绿';
+        w+= '色</div>';
+    }
+
+    c.innerHTML='';
+    c.innerHTML=w;
+}
+
+function graph()
+{
+    for(var i=1;i<=9;i++)
+    {
+        e(i, b[i]);
+    }
+}
+
+function try_move_to_blank(from1, from2, blank)
+{
+    if (blank == from1 || blank == from2)
+    {
+        b[blank] = b[sel_index];
+        b[sel_index] = ' ';
+        sel_index = blank;
+    }
+}
+
+function click_item(i)
+{
+    if (sel_index == i)
+    {
+        // no thing happen
+        return;
+    }
+
+    c = b[i];
+    if (c != ' ')
+    {
+        sel_index = i;
+        graph();
+        return;
+    }
+
+    if (sel_index == 0)
+    {
+        // no move chess
+        return;
+    }
+
+    switch(sel_index)
+    {
+    case 1:
+        try_move_to_blank(6, 8, i);
+        break;
+    case 2:
+        try_move_to_blank(7, 9, i);
+        break;
+    case 3:
+        try_move_to_blank(4, 8, i);
+        break;
+    case 4:
+        try_move_to_blank(3, 9, i);
+        break;
+    case 6:
+        try_move_to_blank(1, 7, i);
+        break;
+    case 7:
+        try_move_to_blank(2, 6, i);
+        break;
+    case 8:
+        try_move_to_blank(1, 3, i);
+        break;
+    case 9:
+        try_move_to_blank(2, 4, i);
+        break;
+    }
+
+    check_win();
+    graph();
+}
+
+
+function check_win()
+{
+    if (b[1] == 'G' && b[3] == 'G' && b[7] == 'R' && b[9] == 'R')
+    {
+        b[5] = 'W';
+    }
+}
+
+
+function reset_all()
+{
+    b=default_board.concat();
+    sel_index=0;
+    graph();
+}
+
+
+reset_all();
+</script>
+</html>
